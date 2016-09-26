@@ -63,33 +63,21 @@ class Hand:
         value = 0
         for card in self.hand:
             value += card[0]
+            # Changes the Ace value from 11 to 1
+            if card[0] == 11 and value > 21:
+                value -= 10
         return value
 
 
-# def player_move():
-#     hand_value = 0
-#     while hand.add_values() <= 21:
-#         move = input("Would you like to (h)it or (s)tand? ").lower()
-#         if move == 'h':
-#             print("{}'s Hand".format(user.name))
-#             print(*hand.dealt_card(deck.deal_card()))
-#             hand_value = hand.add_values()
-#             print("the value of hand is: {}".format(hand_value))
-#             # Add the values here
-#             continue
-#         elif move == "s":
-#             print("You chose to stand. Your hand's value is {}\nNow it's my turn!".format(hand_value))
-#             break
-
-# Starts the dealer's move.
-# def dealer_move():
-#     dealer_hand_value = 0
-#     while dealer_hand.add_values() < 17 or dealer_hand_value < hand_value:
-#         print("Dealer's Hand")
-#         print(*dealer_hand.dealt_card(deck.deal_card()))
-#         dealer_hand_value = dealer_hand.add_values()
-#
-#     print("The value of the dealer's hand is {}".format(dealer_hand_value))
+def check_game():
+    if dealer_hand_value >= hand_value:
+        print("The Dealer Wins. YOU LOSE!")
+        user.lose_bet()
+        print("Now you have ${} to bet".format(user.lose_bet()))
+    elif hand_value > dealer_hand_value:
+        print("YOU WIN!")
+        user.win_bet()
+        print("Now you have ${} to bet".format(user.win_bet()))
 
 
 user_name = input("Player, what's your name?  ")
@@ -125,7 +113,7 @@ print("the value of hand is: {}".format(hand_value))
 print("Dealer's Hand")
 print(*dealer_hand.dealt_card(deck.deal_card()))
 dealer_hand_value += dealer_hand.add_values()
-print("the value of DEALER's hand is: {}".format(dealer_hand_value))
+
 
 # Now the GamePlay for 1 turn
 for x in range(1):
@@ -133,13 +121,13 @@ for x in range(1):
     # Checks to see if blackjack is hit.
     if dealer_hand_value == 21:
         print("Dealer got blackjack! YOU LOSE!")
-        user.win_bet()
-        print("Now you have ${} to bet".format(user.win_bet()))
+        user.lose_bet()
+        print("Now you have ${} to bet".format(user.lose_bet()))
         break
     elif hand_value == 21 and dealer_hand_value < 21:
         print("YOU GOT BLACKJACK!!! YOU WIN!!!")
-        user.lose_bet()
-        print("Now you have ${} to bet".format(user.lose_bet()))
+        user.win_blackjack()
+        print("Now you have ${} to bet".format(user.win_blackjack()))
         break
 
     # Starts the player's move.
@@ -176,12 +164,4 @@ for x in range(1):
         print("Now you have ${} to bet".format(user.win_bet()))
         break
 
-
-    if dealer_hand_value >= hand_value:
-        print("The Dealer Wins. YOU LOSE!")
-        user.lose_bet()
-        print("Now you have ${} to bet".format(user.lose_bet()))
-    elif hand_value > dealer_hand_value:
-        print("YOU WIN!")
-        user.win_bet()
-        print("Now you have ${} to bet".format(user.win_bet()))
+    check_game()
